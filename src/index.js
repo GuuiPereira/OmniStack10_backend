@@ -1,13 +1,19 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const routes = require('./routes')
+const http = require('http');
+const routes = require('./routes');
+const { setupWebsocket } = require('./websocket');
+
 const app = express();
+const server = http.Server(app); //servidor 
+setupWebsocket(server);
 
 app.use(cors())
 app.use(express.json()) // Entender requisições body json
 app.use(routes);
-app.listen(3333);
+
+server.listen(3333);
 
 mongoose.connect('mongodb+srv://usuario_admin:usuario_admin@cluster0-uixp6.mongodb.net/ls?retryWrites=true&w=majority' ,{
   useNewUrlParser: true,
